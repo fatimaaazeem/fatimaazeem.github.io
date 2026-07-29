@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gymm — A Day at the Training House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="rail" id="rail" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <a href="#top" class="mark">Gymm<span class="mark__dot">.</span></a>
+    <nav class="nav" id="nav">
+      <a href="#c-open">05:30</a>
+      <a href="#c-free">Midday</a>
+      <a href="#c-cond">Evening</a>
+      <a href="#membership">Membership</a>
+      <a href="#contact" class="nav__cta">Request Access</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__media">
+      <img src="dumbbell-wall.jpg" alt="Long wall of matched dumbbells inside Gymm, with a member training in the daylight">
+      <div class="hero__scrim"></div>
+    </div>
+    <div class="hero__content">
+      <p class="eyebrow">A private training house — Lahore</p>
+      <h1 class="hero__title">Same room.<br>Different hours.</h1>
+      <p class="hero__sub">Gymm doesn't look like a gym at 5:30am the way it looks at 8pm — the light changes, the pace changes, the room fills and empties. Scroll through a day here the way our members do.</p>
+      <div class="hero__actions">
+        <a href="#c-open" class="btn btn--solid">Start at 05:30</a>
+        <a href="#membership" class="btn btn--ghost">Skip to Membership</a>
+      </div>
+    </div>
+    <div class="hero__scroll" aria-hidden="true"><span></span>Scroll</div>
+  </section>
+
+  <!-- CHAPTER 1 — OPEN -->
+  <section class="chapter" id="c-open" data-tint="brass">
+    <div class="chapter__media">
+      <img src="https://images.unsplash.com/photo-1545612036-2872840642dc?fm=jpg&q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0" alt="Empty dark gym equipment room, still and quiet before opening" loading="lazy">
+    </div>
+    <div class="chapter__panel">
+      <p class="chapter__time">05:30</p>
+      <p class="eyebrow">Chapter One — Open</p>
+      <h2>The room, before anyone's touched it.</h2>
+      <p>Doors open at half five. The rig room is still, the plates are racked, and the first members in have the whole floor to themselves. No queue for the bar, no waiting on a bench — just you and a cold room that hasn't warmed up yet.</p>
+      <ul class="chapter__facts">
+        <li>Half-racks, straight bars, full plate wall</li>
+        <li>First 90 minutes: never more than 12 members on the floor</li>
+        <li>Coffee's on before you are</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 — FREE WEIGHT / MIDDAY -->
+  <section class="chapter chapter--reverse" id="c-free" data-tint="brass">
+    <div class="chapter__media">
+      <img src="https://images.unsplash.com/photo-1632077804406-188472f1a810?fm=jpg&q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0" alt="A neat row of kettlebells lined up along the gym wall" loading="lazy">
+    </div>
+    <div class="chapter__panel">
+      <p class="chapter__time">Midday</p>
+      <p class="eyebrow">Chapter Two — Free Weight Wall</p>
+      <h2>Nothing's ever out of reach.</h2>
+      <p>Kettlebells 8kg to 48kg, dumbbells to 60kg, arranged so a set never has to pause to go hunting for the next weight. This is also when most coached sessions run — our floor caps at 45 members so a coach can actually watch your form, not just your attendance.</p>
+      <dl class="chapter__stats">
+        <div><dt>1:8</dt><dd>coach-to-member ratio</dd></div>
+        <div><dt>45</dt><dd>members on the floor, max</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 — CONDITIONING / EVENING -->
+  <section class="chapter" id="c-cond" data-tint="green">
+    <div class="chapter__media">
+      <img src="https://images.unsplash.com/photo-1709315969349-1a43dea3efdc?fm=jpg&q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0" alt="Gym conditioning bay lit with a band of colored light along the wall" loading="lazy">
+    </div>
+    <div class="chapter__panel">
+      <p class="chapter__time">Evening</p>
+      <p class="eyebrow">Chapter Three — Conditioning Bay</p>
+      <h2>Where the room gets loud.</h2>
+      <p>Post-work hours belong to the conditioning bay — rings, rope climb, sled turf, tyre flips. The light shifts here too, a cooler wash instead of the warm strip everywhere else, because this is the one room built for noise instead of quiet.</p>
+      <ul class="chapter__facts">
+        <li>Rings, climbing rope, sled turf lane</li>
+        <li>Tyre flips on real rubber, not a mat</li>
+        <li>Busiest window: 18:00 – 20:30</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 — CLOSE / NIGHT -->
+  <section class="chapter chapter--reverse" id="c-close" data-tint="brass">
+    <div class="chapter__media">
+      <img src="rig-tire.avif" alt="Training bay with hanging rings and rope and a large tyre on the floor, quiet in the low evening light" loading="lazy">
+    </div>
+    <div class="chapter__panel">
+      <p class="chapter__time">22:30</p>
+      <p class="eyebrow">Chapter Four — Close</p>
+      <h2>The last set of the night.</h2>
+      <p>By closing the room has thinned back out to the regulars — the ones who train because the day is finally quiet enough to. We keep the lights at the same warm 2700K they were at 5:30am, so the last set of the night never feels like an afterthought.</p>
+      <p class="chapter__note">Open until 23:00 on weekdays. See the full schedule below.</p>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="method" id="method">
+    <div class="method__image">
+      <img src="https://images.unsplash.com/photo-1566568531155-07244e00963d?fm=jpg&q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.1.0" alt="Close detail of a matte black kettlebell" loading="lazy">
+    </div>
+    <div class="method__content">
+      <p class="eyebrow">Between the Chapters — The Method</p>
+      <h2>Trained, not left to it.</h2>
+      <p>Every member starts with a full movement assessment. From there, coaches build a plan around whichever chapter of the day actually fits your schedule — not around whichever machine happens to be free.</p>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP — presented as a ledger, not pricing cards -->
+  <section class="membership" id="membership">
+    <div class="section-head">
+      <p class="eyebrow">The Ledger</p>
+      <h2>Three ways in.</h2>
+      <p class="section-head__sub">No contracts longer than a month. Cancel with two weeks' notice, no penalty.</p>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger__row ledger__row--head">
+        <span>Tier</span><span>Access</span><span>Coaching</span><span>Monthly</span><span></span>
+      </div>
+
+      <div class="ledger__row">
+        <span class="ledger__tier">Floor</span>
+        <span>All four chapters, standard hours</span>
+        <span>Monthly check-in</span>
+        <span class="ledger__price">PKR 25,000</span>
+        <a href="#contact" class="btn btn--ghost btn--sm">Enquire</a>
+      </div>
+
+      <div class="ledger__row ledger__row--featured">
+        <span class="ledger__tier">Coached <em>Most requested</em></span>
+        <span>Everything in Floor + priority on the rig room</span>
+        <span>Dedicated coach, 1:8 ratio, monthly programme</span>
+        <span class="ledger__price">PKR 55,000</span>
+        <a href="#contact" class="btn btn--solid btn--sm">Enquire</a>
+      </div>
+
+      <div class="ledger__row">
+        <span class="ledger__tier">Private</span>
+        <span>Everything in Coached + a reserved slot, any hour</span>
+        <span>1:1, four sessions weekly</span>
+        <span class="ledger__price">PKR 120,000</span>
+        <a href="#contact" class="btn btn--ghost btn--sm">Enquire</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOURS / CONTACT -->
+  <section class="closer" id="hours">
+    <div class="closer__grid">
+      <div class="closer__hours">
+        <p class="eyebrow">Full Schedule</p>
+        <dl>
+          <div><dt>Mon — Fri</dt><dd>05:30 — 23:00</dd></div>
+          <div><dt>Saturday</dt><dd>07:00 — 22:00</dd></div>
+          <div><dt>Sunday</dt><dd>08:00 — 20:00</dd></div>
+        </dl>
+      </div>
+      <div class="closer__contact" id="contact">
+        <p class="eyebrow">Visit</p>
+        <h2>Come see which hour is yours.</h2>
+        <p class="closer__lede">No sales pitch — just a look at the space and a conversation about your training. Leave your details and a coach will call you back.</p>
+        <form class="form" id="accessForm">
+          <div class="form__row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form__row">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          <div class="form__row">
+            <label for="goal">What are you training for?</label>
+            <textarea id="goal" name="goal" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn--solid btn--wide">Request a Walkthrough</button>
+          <p class="form__note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <a href="#top" class="mark mark--footer">Gymm<span class="mark__dot">.</span></a>
+    <p>Gulberg III, Lahore, Pakistan</p>
+    <p class="footer__fine">&copy; <span id="year"></span> Gymm Training House. Additional photography via Unsplash.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

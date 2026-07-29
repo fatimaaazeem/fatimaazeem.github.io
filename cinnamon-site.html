@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinnamon — Bakery & Café</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --oat:#F4EDE2;
+    --oat-deep:#EEE2D0;
+    --espresso:#39281D;
+    --cinnamon:#A85C2E;
+    --sage:#7C8A6B;
+    --blush:#EAD2C4;
+    --gold:#D9AE63;
+    --line:rgba(57,40,29,0.13);
+    --ink-soft:#6B5744;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--oat);color:var(--espresso);
+    font-family:'Inter',sans-serif;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(rgba(57,40,29,0.035) 1px, transparent 1px);
+    background-size:3px 3px;
+    opacity:0;
+    animation:pageIn 1.1s ease forwards;
+  }
+  @keyframes pageIn{ to{ opacity:1; } }
+  h1,h2,h3{font-family:'Instrument Serif',serif;font-weight:400;margin:0;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .eyebrow{
+    font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--cinnamon);font-weight:600;display:inline-block;
+  }
+
+  /* scroll progress bar */
+  .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cinnamon),var(--gold));width:0%;z-index:100;transition:width 0.1s linear;}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity 0.9s cubic-bezier(.22,.61,.36,1), transform 0.9s cubic-bezier(.22,.61,.36,1);transition-delay:var(--d,0s);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal-img{opacity:0;clip-path:inset(0 0 100% 0);transition:opacity 1s ease, clip-path 1.1s cubic-bezier(.22,.61,.36,1);transition-delay:var(--d,0s);}
+  .reveal-img.in{opacity:1;clip-path:inset(0 0 0% 0);}
+  /* safety: never leave reveal images hidden */
+  .no-js .reveal-img{opacity:1 !important;clip-path:none !important;}
+  .banner img{display:block;width:100%;}
+  .feature-figure img{display:block;width:100%;}
+  @media (prefers-reduced-motion:reduce){.reveal,.reveal-img{opacity:1 !important;transform:none !important;clip-path:none !important;transition:none !important;}body{animation:none;opacity:1;}}
+
+  /* nav */
+  nav{position:sticky;top:0;background:rgba(244,237,226,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:20;}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;}
+  .brand{display:flex;align-items:baseline;gap:10px;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.35rem;letter-spacing:0.01em;}
+  .brand-tag{font-family:'Inter',sans-serif;font-style:normal;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;}
+  .brand .mark{width:28px;height:28px;border-radius:50%;background:var(--cinnamon);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-style:normal;color:var(--oat);font-size:0.95rem;flex-shrink:0;align-self:center;}
+  .brand b{font-style:normal;color:var(--cinnamon);}
+  nav .links{display:flex;gap:30px;align-items:center;font-size:0.83rem;font-weight:500;color:var(--ink-soft);}
+  nav .links a:not(.order-btn){position:relative;padding-bottom:3px;transition:color 0.3s ease;}
+  nav .links a:not(.order-btn)::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--cinnamon);transition:width 0.35s cubic-bezier(.22,.61,.36,1);}
+  nav .links a:not(.order-btn):hover::after{width:100%;}
+  nav .links a:hover{color:var(--espresso);}
+  .order-btn{background:var(--espresso);color:var(--oat)!important;padding:10px 22px;border-radius:100px;font-weight:500;letter-spacing:0.01em;transition:background 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;}
+  .order-btn:hover{background:var(--cinnamon);transform:translateY(-2px);box-shadow:0 10px 22px -10px rgba(168,92,46,0.55);}
+  @media (max-width:760px){nav .links a:not(.order-btn){display:none;} nav .links{gap:12px;}}
+
+  /* buttons */
+  .btn{padding:14px 26px;border-radius:100px;font-weight:500;font-size:0.92rem;display:inline-block;transition:transform 0.35s cubic-bezier(.22,.61,.36,1), background 0.35s ease, box-shadow 0.35s ease;position:relative;overflow:hidden;border:none;cursor:pointer;font-family:'Inter',sans-serif;}
+  .btn::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.35),transparent);transform:skewX(-20deg);transition:left 0.7s ease;}
+  .btn:hover::before{left:130%;}
+  .btn:hover{transform:translateY(-3px);}
+  .btn-fill{background:var(--cinnamon);color:#fff;box-shadow:0 8px 20px -10px rgba(168,92,46,0.5);}
+  .btn-fill:hover{background:#8f4b23;box-shadow:0 14px 30px -12px rgba(168,92,46,0.65);}
+  .btn-outline{border:1.5px solid var(--espresso);background:transparent;color:var(--espresso);}
+  .btn-outline:hover{background:var(--espresso);color:var(--oat);}
+
+  /* hero */
+  header.hero{padding:64px 0 0;position:relative;overflow:hidden;}
+  .steam{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.5;pointer-events:none;animation:drift 14s ease-in-out infinite;}
+  .steam.s1{width:340px;height:340px;background:var(--blush);top:-100px;right:-60px;}
+  .steam.s2{width:260px;height:260px;background:var(--gold);opacity:0.35;bottom:-60px;left:10%;animation-delay:-6s;}
+  @keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-20px,24px) scale(1.08);}}
+  .hero-anim{opacity:0;transform:translateY(18px);animation:heroUp 0.9s cubic-bezier(.22,.61,.36,1) forwards;animation-delay:var(--hd,0s);}
+  @keyframes heroUp{to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){.hero-anim{opacity:1;transform:none;animation:none;}}
+  .hero .wrap{display:grid;grid-template-columns:1fr 0.8fr;gap:56px;align-items:center;position:relative;}
+  @media (max-width:860px){.hero .wrap{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(2.4rem,5vw,3.7rem);line-height:1.06;font-weight:400;}
+  .hero h1 i{color:var(--cinnamon);}
+  .hero p{max-width:420px;margin:22px 0 32px;color:var(--ink-soft);font-size:1.02rem;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-figure{position:relative;}
+  .hero-figure img{border-radius:22px;box-shadow:0 34px 60px -24px rgba(57,40,29,0.4);width:100%;transition:transform 0.6s cubic-bezier(.22,.61,.36,1);}
+  .hero-figure:hover img{transform:scale(1.02);}
+  .hero-badge{position:absolute;bottom:-20px;left:-24px;background:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 20px 40px -18px rgba(57,40,29,0.35);display:flex;align-items:center;gap:10px;animation:floatA 6s ease-in-out infinite;}
+  .hero-badge .num{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--cinnamon);}
+  .hero-badge .txt{font-size:0.72rem;color:var(--ink-soft);line-height:1.2;max-width:90px;}
+  @media (max-width:860px){.hero-badge{left:12px;}}
+  @keyframes floatA{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+  /* marquee */
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--oat-deep);margin-top:50px;}
+  .marquee .track{display:flex;width:max-content;animation:scrollLeft 26s linear infinite;}
+  .marquee span{display:flex;align-items:center;gap:14px;padding:14px 0;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;color:var(--cinnamon);white-space:nowrap;padding-right:40px;}
+  .marquee span:after{content:'✦';color:var(--sage);font-style:normal;margin-left:40px;}
+  @keyframes scrollLeft{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* divider */
+  .divider{display:flex;justify-content:center;padding:8px 0;}
+  .divider svg path{stroke-dasharray:160;stroke-dashoffset:160;animation:draw 1.6s ease forwards;animation-delay:0.2s;}
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  section{padding:84px 0;}
+  .sec-head{text-align:center;max-width:560px;margin:0 auto 48px;}
+  .sec-head h2{font-size:2.3rem;margin-top:10px;}
+  .sec-head p{color:var(--ink-soft);margin-top:14px;font-size:0.98rem;}
+  .sec-head.left{text-align:left;margin:0 0 40px;}
+
+  /* menu grid */
+  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;perspective:1200px;}
+  @media (max-width:900px){.menu-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.menu-grid{grid-template-columns:1fr;}}
+  .bento{perspective:1200px;}
+  .item{
+    background:#fff;border-radius:18px;overflow:hidden;
+    border:1px solid var(--line);
+    transition:transform 0.35s cubic-bezier(.22,.61,.36,1), box-shadow 0.35s ease, border-color 0.35s ease;
+    will-change:transform;
+  }
+  .item:hover{transform:translateY(-8px);box-shadow:0 30px 50px -26px rgba(57,40,29,0.32);border-color:transparent;}
+  .item .ph{height:210px;overflow:hidden;position:relative;}
+  .item .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.7s cubic-bezier(.22,.61,.36,1);}
+  .item:hover .ph img{transform:scale(1.08);}
+  .item .info{padding:18px 20px 22px;}
+  .item .tag{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sage);font-weight:600;}
+  .item h3{font-size:1.15rem;font-weight:400;margin-top:6px;}
+  .item .desc{font-size:0.86rem;color:var(--ink-soft);margin-top:6px;}
+  .item .price{color:var(--cinnamon);font-weight:600;font-size:0.92rem;margin-top:12px;font-family:'Inter',sans-serif;}
+
+  /* bento grid (cookies) */
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:130px;gap:22px;}
+  .bento-feature{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;}
+  .bento-cell{grid-column:span 2;grid-row:span 1;display:flex;flex-direction:column;}
+  @media (min-width:761px){.bento-cell{grid-column:span 1;}}
+  .bento-feature{overflow:hidden;}
+  .bento-cell{overflow:hidden;}
+  .bento-feature .ph{flex:1 1 auto;min-height:180px;height:auto;}
+  .bento-cell .ph{flex:1 1 auto;min-height:120px;height:auto;}
+  .bento-feature .ph img,.bento-cell .ph img{width:100%;height:100%;object-fit:cover;display:block;}
+  .bento .info{flex:0 0 auto;}
+  @media (max-width:760px){
+    .bento{grid-template-columns:1fr 1fr;grid-auto-rows:170px;}
+    .bento-feature{grid-column:span 2;grid-row:span 2;}
+    .bento-cell{grid-column:span 1;grid-row:span 1;}
+  }
+  @media (max-width:520px){
+    .bento{grid-template-columns:1fr;}
+    .bento-feature,.bento-cell{grid-column:span 1;}
+  }
+  .feature{background:var(--oat-deep);}
+  .feature-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:center;}
+  @media (max-width:860px){.feature-grid{grid-template-columns:1fr;}}
+  .feature-figure{border-radius:22px;overflow:hidden;box-shadow:0 30px 55px -28px rgba(57,40,29,0.4);}
+  .feature-figure img{transition:transform 0.7s cubic-bezier(.22,.61,.36,1);}
+  .feature-figure:hover img{transform:scale(1.05);}
+  .feature-text p{color:var(--ink-soft);margin-top:16px;max-width:460px;}
+  .mini-card{display:flex;gap:16px;background:#fff;border-radius:16px;padding:16px;margin-top:28px;max-width:420px;border:1px solid var(--line);transition:transform 0.35s ease, box-shadow 0.35s ease;}
+  .mini-card:hover{transform:translateY(-4px);box-shadow:0 20px 34px -22px rgba(57,40,29,0.3);}
+  .mini-card img{width:76px;height:76px;border-radius:12px;object-fit:cover;flex-shrink:0;}
+  .mini-card h4{font-family:'Instrument Serif',serif;font-weight:400;font-size:1.15rem;}
+  .mini-card p{color:var(--ink-soft);font-size:0.85rem;margin-top:4px;}
+
+  /* wide banner (iced) */
+  .banner{position:relative;border-radius:26px;overflow:hidden;box-shadow:0 34px 60px -28px rgba(57,40,29,0.4);}
+  .banner img{width:100%;height:420px;object-fit:cover;transition:transform 0.9s ease;}
+  .banner:hover img{transform:scale(1.04);}
+  .banner-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(57,40,29,0.05) 0%, rgba(57,40,29,0.72) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:44px;}
+  .banner-overlay h2{color:#fff;font-size:2.2rem;max-width:16ch;}
+  .banner-overlay p{color:rgba(244,237,226,0.85);margin-top:10px;max-width:420px;}
+  @media (max-width:640px){.banner img{height:320px;} .banner-overlay{padding:26px;} .banner-overlay h2{font-size:1.7rem;}}
+
+  /* stats strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;padding:56px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  @media (max-width:760px){.stats{grid-template-columns:1fr 1fr;}}
+  .stats .stat h3{font-size:2.6rem;color:var(--cinnamon);}
+  .stats .stat span{display:block;font-size:0.78rem;color:var(--ink-soft);margin-top:6px;letter-spacing:0.03em;}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:56px;align-items:center;}
+  @media (max-width:820px){.about-grid{grid-template-columns:1fr;}}
+  .about-photos{position:relative;height:420px;}
+  .about-photos img{position:absolute;border-radius:18px;object-fit:cover;box-shadow:0 26px 50px -24px rgba(57,40,29,0.4);border:6px solid var(--oat);transition:transform 0.5s cubic-bezier(.22,.61,.36,1);}
+  .about-photos img:hover{transform:scale(1.04) !important;z-index:5;}
+  .ap1{width:70%;height:74%;top:0;left:0;}
+  .ap2{width:52%;height:52%;bottom:0;right:0;animation:floatB 8s ease-in-out infinite;}
+  @keyframes floatB{0%,100%{transform:translateY(0);}50%{transform:translateY(12px);}}
+  @media (max-width:820px){.about-photos{height:340px;}}
+  .about-text p{color:var(--ink-soft);margin-top:16px;}
+  .about-text .sig{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.4rem;margin-top:20px;color:var(--cinnamon);}
+
+  /* gallery */
+  .gallery{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:120px;gap:12px;}
+  .gallery a{grid-column:span 2;grid-row:span 2;position:relative;overflow:hidden;border-radius:14px;display:block;}
+  .gallery a:nth-child(1){grid-column:span 3;grid-row:span 3;}
+  .gallery a:nth-child(4){grid-column:span 3;grid-row:span 2;}
+  .gallery img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(.22,.61,.36,1);}
+  .gallery a:hover img{transform:scale(1.12);}
+  .gallery a::after{content:'';position:absolute;inset:0;background:rgba(57,40,29,0);transition:background 0.4s ease;}
+  .gallery a:hover::after{background:rgba(57,40,29,0.15);}
+  @media (max-width:760px){.gallery{grid-template-columns:repeat(3,1fr);grid-auto-rows:100px;} .gallery a{grid-column:span 1 !important;grid-row:span 1 !important;} .gallery a:nth-child(1),.gallery a:nth-child(4){grid-column:span 2 !important;grid-row:span 2 !important;}}
+
+  /* strip / CTA */
+  .strip{background:var(--espresso);color:var(--oat);text-align:center;padding:70px 0;position:relative;overflow:hidden;}
+  .strip h2{color:var(--oat);font-size:2.2rem;max-width:18ch;margin:0 auto 14px;}
+  .strip p{color:rgba(244,237,226,0.65);max-width:420px;margin:0 auto 28px;}
+  .strip .btn-fill{background:var(--gold);color:var(--espresso);}
+  .strip .btn-fill:hover{background:#c99b4d;}
+
+  footer{padding:50px 0 30px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid var(--line);}
+  @media (max-width:700px){.footer-grid{grid-template-columns:1fr;gap:28px;}}
+  footer .brand{margin-bottom:10px;}
+  footer p{color:var(--ink-soft);font-size:0.88rem;}
+  footer h4{font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;}
+  footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:0.9rem;}
+  footer ul a{position:relative;transition:color 0.3s ease;}
+  footer ul a:hover{color:var(--cinnamon);}
+  .footer-bottom{padding-top:22px;text-align:center;font-size:0.8rem;color:var(--ink-soft);}
+
+  /* --- balance fixes & new sections --- */
+  .hero-figure img{height:520px;object-fit:cover;}
+  @media (max-width:860px){.hero-figure img{height:340px;}}
+  .add-note{text-align:center;margin-top:30px;color:var(--ink-soft);font-size:0.92rem;}
+  .add-note b{color:var(--cinnamon);}
+  /* uniform card image height so every row lines up */
+  .menu-grid .item .ph{height:220px;}
+  /* potatoes: wide feature banner-style trio */
+  .potato-sec{background:var(--oat-deep);}
+  .potato-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:820px){.potato-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto;}}
+  .potato-card{position:relative;border-radius:18px;overflow:hidden;box-shadow:0 24px 44px -26px rgba(57,40,29,0.35);aspect-ratio:4/5;}
+  .potato-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(.22,.61,.36,1);}
+  .potato-card:hover img{transform:scale(1.07);}
+  .potato-card .cap{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;background:linear-gradient(180deg,rgba(57,40,29,0) 40%,rgba(57,40,29,0.78) 100%);}
+  .potato-card .cap .tag{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:600;}
+  .potato-card .cap h3{color:#fff;font-size:1.3rem;font-weight:400;margin-top:4px;}
+  .potato-card .cap .desc{color:rgba(244,237,226,0.9);font-size:0.82rem;margin-top:6px;}
+  .potato-card .cap .price{color:var(--gold);font-weight:600;font-size:0.9rem;margin-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="mark">C</span>Cinnamon<span class="brand-tag">Bakery &amp; Café</span></div>
+    <div class="links">
+      <a href="#breakfast">Breakfast</a>
+      <a href="#potatoes">Potatoes</a>
+      <a href="#coffee">Coffee</a>
+      <a href="#drinks">Drinks</a>
+      <a href="#cookies">Cookies</a>
+      <a href="#cold">Cold Drinks</a>
+      <a href="#story">Our Story</a>
+      <a href="#order" class="order-btn">Order online</a>
+    </div>
+  </div>
+</nav>
+
+
+<header class="hero">
+  <div class="steam s1"></div>
+  <div class="steam s2"></div>
+  <div class="wrap">
+    <div>
+      <span class="eyebrow hero-anim" style="--hd:0.05s">Slow mornings &middot; since 2019</span>
+      <h1 class="hero-anim" style="margin-top:16px;--hd:0.15s">A quiet corner for <i>coffee</i> and something warm.</h1>
+      <p class="hero-anim" style="--hd:0.28s">Espresso pulled to order, croissants laminated by hand, cookies baked in small batches, and a full breakfast menu when mornings ask for more.</p>
+      <div class="hero-actions hero-anim" style="--hd:0.4s">
+        <a href="#order" class="btn btn-fill">Order for pickup</a>
+        <a href="#breakfast" class="btn btn-outline">View menu</a>
+      </div>
+    </div>
+    <div class="hero-figure hero-anim" style="--hd:0.3s">
+      <img src="hero-croissants.jpg" alt="Croissants and espresso on a sunlit tray">
+      <div class="hero-badge">
+        <span class="num">6+</span>
+        <span class="txt">years of slow mornings</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee">
+    <div class="track">
+      <span>Fresh daily</span><span>Baked by hand</span><span>Slow mornings</span><span>Cold brew all summer</span><span>Small batch cookies</span>
+      <span>Fresh daily</span><span>Baked by hand</span><span>Slow mornings</span><span>Cold brew all summer</span><span>Small batch cookies</span>
+    </div>
+  </div>
+</header>
+
+<!-- BREAKFAST -->
+<section id="breakfast">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Morning menu</span>
+      <h2>Breakfast, made properly</h2>
+      <p>Plated slow, served warm &mdash; the kind of breakfast worth sitting down for.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="item reveal" style="--d:0.02s">
+        <div class="ph"><img src="full-house.jpg" alt="Full House Breakfast"></div>
+        <div class="info">
+          <div class="tag">Breakfast</div>
+          <h3>Full House Breakfast</h3>
+          <div class="desc">Fried eggs, sausage, baked beans, roasted tomato, mushrooms, sourdough toast.</div>
+          <div class="price">$13.50</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.06s">
+        <div class="ph"><img src="egg-sandwiches.jpg" alt="Egg &amp; Bacon Muffin"></div>
+        <div class="info">
+          <div class="tag">Handheld</div>
+          <h3>Egg &amp; Bacon Muffin</h3>
+          <div class="desc">Fried egg, crispy bacon, melted cheese on a toasted muffin or everything bagel.</div>
+          <div class="price">$7.50</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.1s">
+        <div class="ph"><img src="breakfast-burrito.jpg" alt="Loaded Breakfast Burrito"></div>
+        <div class="info">
+          <div class="tag">Handheld</div>
+          <h3>Loaded Breakfast Burrito</h3>
+          <div class="desc">Scrambled egg, sausage, hash brown and cheddar, wrapped and pressed warm.</div>
+          <div class="price">$8.95</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.14s">
+        <div class="ph"><img src="croissant-melt.jpg" alt="Croissant Melt"></div>
+        <div class="info">
+          <div class="tag">Breakfast</div>
+          <h3>Croissant Melt</h3>
+          <div class="desc">Buttery croissant filled with melted cheese and herb butter, hash browns on the side.</div>
+          <div class="price">$9.50</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.18s">
+        <div class="ph"><img src="waffles.jpg" alt="Buttermilk Waffles"></div>
+        <div class="info">
+          <div class="tag">Sweet</div>
+          <h3>Buttermilk Waffles</h3>
+          <div class="desc">Crisp golden waffles with warm maple syrup and a knob of butter.</div>
+          <div class="price">$8.75</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.22s">
+        <div class="ph"><img src="pancakes.jpg" alt="Fluffy Pancake Stack"></div>
+        <div class="info">
+          <div class="tag">Sweet</div>
+          <h3>Fluffy Pancake Stack</h3>
+          <div class="desc">Three stacked pancakes, honeycomb butter, real maple syrup poured to order.</div>
+          <div class="price">$9.25</div>
+        </div>
+      </div>
+    </div>
+    <p class="add-note reveal" style="--d:0.28s">Add a warm cookie from the counter to any breakfast for <b>+$2.50</b>.</p>
+  </div>
+</section>
+
+<div class="divider">
+  <svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8 C 15 -4, 30 20, 45 8 S 75 -4, 90 8 S 105 20, 120 8" fill="none" stroke="#A85C2E" stroke-width="1.4" stroke-linecap="round"/></svg>
+</div>
+
+<!-- POTATOES -->
+<section class="potato-sec" id="potatoes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Golden &amp; crisp</span>
+      <h2>The Potato Table</h2>
+      <p>Skillet-fried, seasoned bold, and always crisp at the edges &mdash; our answer to a proper savoury morning.</p>
+    </div>
+    <div class="potato-grid">
+      <div class="potato-card reveal">
+        <img src="loaded-fries.jpg" alt="Loaded Breakfast Fries">
+        <div class="cap">
+          <div class="tag">Skillet</div>
+          <h3>Loaded Breakfast Fries</h3>
+          <div class="desc">Golden fries under melted cheddar, bacon, a runny egg and house chipotle drizzle.</div>
+          <div class="price">$11.00</div>
+        </div>
+      </div>
+      <div class="potato-card reveal">
+        <img src="home-fries.jpg" alt="Crispy Home Fries">
+        <div class="cap">
+          <div class="tag">Classic</div>
+          <h3>Crispy Home Fries</h3>
+          <div class="desc">Hand-cut potatoes tossed in smoked paprika and roasted until deep golden.</div>
+          <div class="price">$6.50</div>
+        </div>
+      </div>
+      <div class="potato-card reveal">
+        <img src="potato-hash.jpg" alt="Country Potato Hash">
+        <div class="cap">
+          <div class="tag">Skillet</div>
+          <h3>Country Potato Hash</h3>
+          <div class="desc">Seasoned potato hash with peppers and herbs, topped with three sunny fried eggs.</div>
+          <div class="price">$10.50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COFFEE FEATURE -->
+<section class="feature" id="coffee">
+  <div class="wrap feature-grid">
+    <div class="feature-figure reveal-img">
+      <img src="coffee-feature.jpg" alt="Latte with leaf art and cinnamon">
+    </div>
+    <div class="feature-text reveal">
+      <span class="eyebrow">Coffee, poured with care</span>
+      <h2 style="margin-top:10px;font-size:2.1rem;">Every cup, made to order</h2>
+      <p>We pull single-origin espresso to order and steam milk until it&rsquo;s silk, not foam. No batching, no shortcuts &mdash; just a barista who&rsquo;s paying attention. Prefer something warmer and spiced? Our masala chai and South Indian filter coffee are brewed fresh and poured hot at the counter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="wrap">
+  <div class="stats reveal">
+    <div class="stat"><h3>6+</h3><span>Years open</span></div>
+    <div class="stat"><h3>30+</h3><span>Items baked daily</span></div>
+    <div class="stat"><h3>7am</h3><span>Doors open</span></div>
+    <div class="stat"><h3>0</h3><span>Shortcuts taken</span></div>
+  </div>
+</div>
+
+<!-- SPECIALTY DRINKS -->
+<section id="drinks">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Beyond the espresso</span>
+      <h2>Coffee &amp; specialty drinks</h2>
+      <p>Matcha, chocolate, chai, filter coffee and a proper black &mdash; for whatever the moment calls for.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="item reveal" style="--d:0.02s">
+        <div class="ph"><img src="classic-latte.jpg" alt="Classic Latte"></div>
+        <div class="info">
+          <div class="tag">Coffee</div>
+          <h3>Classic Latte</h3>
+          <div class="desc">Double shot, steamed whole milk, served in glass.</div>
+          <div class="price">$4.75</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.06s">
+        <div class="ph"><img src="long-black.jpg" alt="Long Black"></div>
+        <div class="info">
+          <div class="tag">Coffee</div>
+          <h3>Long Black</h3>
+          <div class="desc">Double espresso over hot water, full-bodied, no milk.</div>
+          <div class="price">$3.75</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.1s">
+        <div class="ph"><img src="filter-coffee.jpg" alt="South Indian Filter Coffee"></div>
+        <div class="info">
+          <div class="tag">Coffee</div>
+          <h3>South Indian Filter Coffee</h3>
+          <div class="desc">Strong decoction and frothed milk, poured the traditional way.</div>
+          <div class="price">$4.25</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.14s">
+        <div class="ph"><img src="matcha.jpg" alt="Ceremonial Matcha Latte"></div>
+        <div class="info">
+          <div class="tag">Specialty</div>
+          <h3>Ceremonial Matcha Latte</h3>
+          <div class="desc">Whisked matcha, steamed milk, finished with leaf art.</div>
+          <div class="price">$5.75</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.18s">
+        <div class="ph"><img src="hot-chocolate.jpg" alt="Cinnamon Hot Chocolate"></div>
+        <div class="info">
+          <div class="tag">Specialty</div>
+          <h3>Cinnamon Hot Chocolate</h3>
+          <div class="desc">Real cocoa, whipped cream, a dust of cinnamon on top.</div>
+          <div class="price">$5.00</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.22s">
+        <div class="ph"><img src="masala-chai.jpg" alt="Masala Chai"></div>
+        <div class="info">
+          <div class="tag">Specialty</div>
+          <h3>Masala Chai</h3>
+          <div class="desc">Slow-brewed with whole spices, poured hot at the counter.</div>
+          <div class="price">$4.75</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COOKIES -->
+<section id="cookies">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">From the counter</span>
+      <h2>Cookies &amp; sweet things</h2>
+      <p>Baked in small batches through the morning, still warm by the time you get one.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="item reveal" style="--d:0.02s">
+        <div class="ph"><img src="biscoff.jpg" alt="Biscoff-Stuffed Cookie"></div>
+        <div class="info">
+          <div class="tag">Signature</div>
+          <h3>Biscoff-Stuffed Cookie</h3>
+          <div class="desc">Brown butter dough around melted Biscoff, crushed Lotus biscuit, warm caramel drizzle.</div>
+          <div class="price">$5.25</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.06s">
+        <div class="ph"><img src="double-choc.jpg" alt="Double Chocolate Sea Salt"></div>
+        <div class="info">
+          <div class="tag">Cookie</div>
+          <h3>Double Chocolate Sea Salt</h3>
+          <div class="desc">Deep cocoa cookie loaded with chocolate chips and a pinch of flaky sea salt.</div>
+          <div class="price">$3.75</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.1s">
+        <div class="ph"><img src="red-velvet.jpg" alt="Red Velvet White Chip"></div>
+        <div class="info">
+          <div class="tag">Cookie</div>
+          <h3>Red Velvet White Chip</h3>
+          <div class="desc">Soft red velvet cookie studded with white and dark chocolate chips.</div>
+          <div class="price">$3.95</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.14s">
+        <div class="ph"><img src="cinnamon-roll.jpg" alt="Iced Cinnamon Roll"></div>
+        <div class="info">
+          <div class="tag">Pastry</div>
+          <h3>Iced Cinnamon Roll</h3>
+          <div class="desc">Soft swirled roll baked warm and finished with a thick cream-cheese glaze.</div>
+          <div class="price">$4.75</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.18s">
+        <div class="ph"><img src="donut-box.jpg" alt="Assorted Donut Box"></div>
+        <div class="info">
+          <div class="tag">Pastry</div>
+          <h3>Assorted Donut Box</h3>
+          <div class="desc">Half-dozen glazed and sprinkled donuts, boxed fresh to share.</div>
+          <div class="price">$12.00</div>
+        </div>
+      </div>
+      <div class="item reveal" style="--d:0.22s">
+        <div class="ph"><img src="churros.jpg" alt="Cinnamon Churros with Chocolate"></div>
+        <div class="info">
+          <div class="tag">Sweet</div>
+          <h3>Cinnamon Churros</h3>
+          <div class="desc">Crisp sugar-dusted churros with a warm dark chocolate dipping sauce.</div>
+          <div class="price">$6.50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLD DRINKS BANNER -->
+<section id="cold">
+  <div class="wrap">
+    <div class="sec-head left reveal">
+      <span class="eyebrow">When the sun&rsquo;s out</span>
+      <h2>Something cold</h2>
+    </div>
+    <div class="banner reveal-img">
+      <img src="iced-teas.jpg" alt="House-steeped iced teas in five flavours">
+      <div class="banner-overlay">
+        <h2>House-steeped iced tea, five ways</h2>
+        <p>Blackberry mint, hibiscus rosemary, pomegranate, peach, and strawberry basil &mdash; brewed fresh every morning and built over ice to order.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <svg width="120" height="16" viewBox="0 0 120 16"><path d="M0 8 C 15 -4, 30 20, 45 8 S 75 -4, 90 8 S 105 20, 120 8" fill="none" stroke="#A85C2E" stroke-width="1.4" stroke-linecap="round"/></svg>
+</div>
+
+<!-- ABOUT -->
+<section id="story">
+  <div class="wrap about-grid">
+    <div class="about-photos reveal">
+      <img class="ap1" src="hero-croissants.jpg" alt="Coffee and croissants on a tray">
+      <img class="ap2" src="masala-chai.jpg" alt="Chai poured at the counter">
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow">Our story</span>
+      <h2 style="margin-top:10px;font-size:2rem;">Built for lingering</h2>
+      <p>Cinnamon started as a single espresso machine and a folding table at the weekend market. We grew slowly, on purpose &mdash; every pastry is still mixed and shaped by hand, and every drink is made when you order it, not before.</p>
+      <p>No rush, no shortcuts. Just a warm room, good coffee, and something sweet worth sitting down for.</p>
+      <div class="sig">&mdash; the Cinnamon team</div>
+    </div>
+  </div>
+</section>
+
+<div class="strip" id="order">
+  <div class="wrap">
+    <h2 class="reveal">Order ahead, find your table.</h2>
+    <p class="reveal" style="--d:0.06s">Pickup ready in 15 minutes. Delivery within 3 miles.</p>
+    <a href="#" class="btn btn-fill reveal" style="--d:0.12s">Start your order →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand"><span class="mark">C</span>Cinnamon</div>
+        <p style="max-width:280px;margin-top:14px;">A small café built around taking your time. Fresh daily, since 2019.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>123 Main Street</li>
+          <li>Open 7am – 4pm daily</li>
+          <li>hello@cinnamoncafe.co</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#breakfast">Breakfast</a>
+      <a href="#potatoes">Potatoes</a></li>
+          <li><a href="#coffee">Coffee</a></li>
+          <li><a href="#cookies">Cookies</a></li>
+          <li><a href="#cold">Cold Drinks</a></li>
+          <li><a href="#story">Our Story</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Cinnamon Café. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // scroll-triggered reveals
+  const items = document.querySelectorAll('.reveal:not(.in), .reveal-img:not(.in)');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -5% 0px'});
+  items.forEach(el=>io.observe(el));
+
+  // safety net: reveal anything still hidden shortly after load
+  window.addEventListener('load', ()=>{
+    setTimeout(()=>{
+      document.querySelectorAll('.reveal:not(.in), .reveal-img:not(.in)').forEach(el=>el.classList.add('in'));
+    }, 2500);
+  });
+
+  // scroll progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+  });
+
+  // subtle parallax on hero figure
+  const heroFigure = document.querySelector('.hero-figure');
+  if(heroFigure && matchMedia('(prefers-reduced-motion: no-preference)').matches && matchMedia('(min-width:861px)').matches){
+    heroFigure.style.transition = 'transform 0.3s ease-out';
+    document.querySelector('header.hero').addEventListener('mousemove', (e)=>{
+      const r = heroFigure.getBoundingClientRect();
+      const cx = (e.clientX - r.left - r.width/2) / r.width;
+      const cy = (e.clientY - r.top - r.height/2) / r.height;
+      heroFigure.style.transform = `translate(${cx*10}px, ${cy*10}px)`;
+    });
+    document.querySelector('header.hero').addEventListener('mouseleave', ()=>{
+      heroFigure.style.transform = '';
+    });
+  }
+  // subtle 3D tilt on cards
+  const tiltEls = document.querySelectorAll('.item, .mini-card');
+  const canHover = matchMedia('(hover:hover)').matches && matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  if(canHover){
+    tiltEls.forEach(el=>{
+      el.style.transition = 'transform 0.25s ease, box-shadow 0.35s ease, border-color 0.35s ease';
+      el.addEventListener('mousemove', (e)=>{
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = `perspective(900px) rotateX(${py*-6}deg) rotateY(${px*6}deg) translateY(-6px)`;
+      });
+      el.addEventListener('mouseleave', ()=>{
+        el.style.transform = '';
+      });
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Escapes — Journeys through Northern Pakistan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0C2632;
+    --navy-deep:#081A23;
+    --azure:#1B8A9E;
+    --azure-bright:#28B0C6;
+    --ice:#DCEEF2;
+    --sand:#E4D2B4;
+    --snow:#F6FAFB;
+    --ink:#12232B;
+    --ink-soft:#4A6570;
+    --line:rgba(12,38,50,0.12);
+    --line-light:rgba(255,255,255,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--snow);color:var(--ink);
+    font-family:'Outfit',sans-serif;line-height:1.65;font-weight:300;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:400;margin:0;line-height:1.1;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px;}
+  .eyebrow{font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--azure);font-weight:600;font-family:'Outfit',sans-serif;display:inline-block;}
+  .eyebrow.on-dark{color:var(--azure-bright);}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1);transition-delay:var(--d,0s);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;}}
+
+  /* progress line */
+  .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--azure),var(--azure-bright));width:0;z-index:200;transition:width .1s linear;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s ease,box-shadow .4s ease,padding .4s ease;padding:22px 0;}
+  nav.solid{background:rgba(8,26,35,0.92);backdrop-filter:blur(14px);box-shadow:0 6px 30px -18px rgba(0,0,0,0.6);padding:14px 0;}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:12px;color:#fff;}
+  .brand .peak{width:34px;height:34px;flex-shrink:0;}
+  .brand .name{font-family:'Fraunces',serif;font-size:1.4rem;letter-spacing:0.01em;line-height:1;}
+  .brand .name small{display:block;font-family:'Outfit',sans-serif;font-size:0.56rem;letter-spacing:0.34em;text-transform:uppercase;color:var(--azure-bright);font-weight:600;margin-top:3px;}
+  .nav-links{display:flex;gap:34px;align-items:center;font-size:0.9rem;font-weight:400;color:rgba(255,255,255,0.86);}
+  .nav-links a{position:relative;padding-bottom:4px;transition:color .3s;}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1.5px;background:var(--azure-bright);transition:width .35s cubic-bezier(.22,.61,.36,1);}
+  .nav-links a:hover{color:#fff;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{background:var(--azure);color:#fff!important;padding:11px 24px;border-radius:100px;font-weight:500;transition:background .3s,transform .3s,box-shadow .3s;}
+  .nav-cta::after{display:none;}
+  .nav-cta:hover{background:var(--azure-bright);transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(40,176,198,0.7);}
+  .nav-toggle{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;}
+  .nav-toggle svg{width:26px;height:26px;}
+  @media (max-width:900px){
+    .nav-links{position:fixed;inset:0 0 0 auto;width:min(78vw,320px);flex-direction:column;justify-content:center;gap:26px;background:var(--navy-deep);padding:40px;transform:translateX(100%);transition:transform .45s cubic-bezier(.22,.61,.36,1);font-size:1.1rem;}
+    .nav-links.open{transform:translateX(0);}
+    .nav-toggle{display:block;z-index:110;}
+  }
+
+  /* HERO */
+  header.hero{position:relative;min-height:100vh;display:flex;align-items:center;color:#fff;overflow:hidden;}
+  .hero-slides{position:absolute;inset:0;}
+  .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.6s ease,transform 8s ease;transform:scale(1.08);}
+  .hero-slide.active{opacity:1;transform:scale(1);}
+  .hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,28,0.60) 0%,rgba(6,20,28,0.45) 35%,rgba(6,20,28,0.88) 100%);}
+  /* left-side readability wash so the copy always reads */
+  .hero-inner::before{content:'';position:absolute;top:50%;left:0;transform:translateY(-50%);width:min(760px,92%);height:120%;background:radial-gradient(ellipse at 22% 50%, rgba(6,20,28,0.72) 0%, rgba(6,20,28,0.5) 42%, rgba(6,20,28,0) 72%);pointer-events:none;z-index:-1;}
+  .hero h1,.hero p{text-shadow:0 2px 24px rgba(0,0,0,0.45);}
+  .hero-inner{position:relative;z-index:2;width:100%;isolation:isolate;}
+  .hero h1{font-size:clamp(2.6rem,6.5vw,5.4rem);font-weight:500;max-width:16ch;letter-spacing:-0.01em;}
+  .hero h1 em{font-style:italic;color:var(--azure-bright);}
+  .hero p{max-width:52ch;margin:26px 0 36px;font-size:clamp(1rem,1.4vw,1.18rem);color:rgba(255,255,255,0.9);font-weight:300;}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:100px;font-weight:500;font-size:0.95rem;font-family:'Outfit',sans-serif;cursor:pointer;border:none;transition:transform .35s cubic-bezier(.22,.61,.36,1),background .35s,box-shadow .35s,color .35s;}
+  .btn-fill{background:var(--azure);color:#fff;box-shadow:0 14px 30px -14px rgba(27,138,158,0.8);}
+  .btn-fill:hover{background:var(--azure-bright);transform:translateY(-3px);}
+  .btn-ghost{background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.5);backdrop-filter:blur(4px);}
+  .btn-ghost:hover{background:#fff;color:var(--navy);transform:translateY(-3px);}
+  .hero-meta{position:absolute;bottom:32px;left:0;right:0;z-index:2;}
+  .hero-meta .wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;}
+  .hero-stats{display:flex;gap:38px;}
+  .hero-stat .n{font-family:'Fraunces',serif;font-size:1.9rem;color:#fff;line-height:1;}
+  .hero-stat .l{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-top:6px;}
+  .hero-dots{display:flex;gap:10px;}
+  .hero-dots button{width:32px;height:3px;border:none;background:rgba(255,255,255,0.35);cursor:pointer;padding:0;transition:background .3s;}
+  .hero-dots button.on{background:var(--azure-bright);}
+  @media (max-width:640px){.hero-stats{gap:24px;} .hero-stat .n{font-size:1.5rem;}}
+
+  /* SECTION scaffolding */
+  section{padding:100px 0;}
+  .sec-head{max-width:640px;margin-bottom:56px;}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+  .sec-head h2{font-size:clamp(2rem,4vw,3rem);font-weight:500;margin-top:14px;}
+  .sec-head p{color:var(--ink-soft);margin-top:16px;font-size:1.05rem;}
+
+  /* DESTINATIONS */
+  .dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:920px){.dest-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:600px){.dest-grid{grid-template-columns:1fr;}}
+  .dest{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 24px 50px -30px rgba(12,38,50,0.5);cursor:pointer;}
+  .dest img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,.61,.36,1);}
+  .dest:hover img{transform:scale(1.09);}
+  .dest::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,26,35,0) 35%,rgba(8,26,35,0.85) 100%);}
+  .dest .body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:#fff;}
+  .dest .alt{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--azure-bright);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .dest h3{font-size:1.6rem;font-weight:500;margin-top:8px;}
+  .dest .region{font-size:0.85rem;color:rgba(255,255,255,0.8);margin-top:2px;}
+  .dest .go{margin-top:14px;display:inline-flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:500;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;}
+  .dest:hover .go{opacity:1;transform:translateY(0);}
+  .dest.tall{grid-row:span 2;aspect-ratio:auto;}
+  @media (max-width:600px){.dest.tall{grid-row:auto;aspect-ratio:3/4;}}
+
+  /* PACKAGES */
+  .pkg-sec{background:var(--navy);color:#fff;}
+  .pkg-sec .sec-head p{color:rgba(255,255,255,0.72);}
+  .pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  @media (max-width:920px){.pkg-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto;}}
+  .pkg{background:rgba(255,255,255,0.04);border:1px solid var(--line-light);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.22,.61,.36,1),border-color .4s,box-shadow .4s;}
+  .pkg:hover{transform:translateY(-8px);border-color:rgba(40,176,198,0.5);box-shadow:0 30px 60px -30px rgba(0,0,0,0.7);}
+  .pkg .ph{height:210px;overflow:hidden;position:relative;}
+  .pkg .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,.61,.36,1);}
+  .pkg:hover .ph img{transform:scale(1.08);}
+  .pkg .ribbon{position:absolute;top:16px;left:16px;background:var(--azure);color:#fff;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:6px 12px;border-radius:100px;}
+  .pkg .pk-body{padding:26px;display:flex;flex-direction:column;flex:1;}
+  .pkg h3{font-size:1.45rem;font-weight:500;}
+  .pkg .route{font-size:0.82rem;color:var(--azure-bright);letter-spacing:0.06em;margin-top:6px;}
+  .pkg .pk-desc{color:rgba(255,255,255,0.72);font-size:0.92rem;margin-top:14px;flex:1;}
+  .pkg .pk-feats{list-style:none;padding:0;margin:18px 0;display:flex;flex-direction:column;gap:9px;}
+  .pkg .pk-feats li{font-size:0.88rem;color:rgba(255,255,255,0.85);display:flex;align-items:center;gap:10px;}
+  .pkg .pk-feats svg{width:16px;height:16px;color:var(--azure-bright);flex-shrink:0;}
+  .pkg .pk-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto;padding-top:20px;border-top:1px solid var(--line-light);}
+  .pkg .price{font-family:'Fraunces',serif;font-size:1.7rem;color:#fff;line-height:1;}
+  .pkg .price small{font-family:'Outfit',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.6);font-weight:300;display:block;margin-top:4px;letter-spacing:0.04em;}
+  .pkg .pk-book{background:var(--azure);color:#fff;border:none;padding:11px 20px;border-radius:100px;font-family:'Outfit',sans-serif;font-weight:500;font-size:0.85rem;cursor:pointer;transition:background .3s,transform .3s;}
+  .pkg .pk-book:hover{background:var(--azure-bright);transform:translateY(-2px);}
+
+  /* STAY strip */
+  .stay-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:18px;grid-template-rows:220px 220px;}
+  .stay-grid a{position:relative;border-radius:18px;overflow:hidden;display:block;}
+  .stay-grid a:nth-child(1){grid-row:span 2;}
+  .stay-grid img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,.61,.36,1);}
+  .stay-grid a:hover img{transform:scale(1.08);}
+  .stay-grid a::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,26,35,0) 45%,rgba(8,26,35,0.7) 100%);}
+  .stay-grid .cap{position:absolute;left:20px;bottom:18px;z-index:2;color:#fff;}
+  .stay-grid .cap .t{font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--azure-bright);font-weight:600;}
+  .stay-grid .cap h4{font-size:1.2rem;font-weight:500;margin-top:3px;}
+  @media (max-width:800px){.stay-grid{grid-template-columns:1fr 1fr;grid-template-rows:180px 180px 180px;} .stay-grid a:nth-child(1){grid-row:span 1;grid-column:span 2;}}
+  @media (max-width:480px){.stay-grid{grid-template-columns:1fr;grid-auto-rows:200px;grid-template-rows:none;} .stay-grid a:nth-child(1){grid-column:span 1;}}
+
+  /* BOOKING */
+  .book-sec{position:relative;color:#fff;overflow:hidden;}
+  .book-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1761675688044-0eb981b90481?fm=jpg&q=80&w=1600&fit=crop') center/cover;}
+  .book-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(8,26,35,0.94) 0%,rgba(8,26,35,0.86) 45%,rgba(12,38,50,0.6) 100%);}
+  .book-inner{position:relative;z-index:2;display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:center;}
+  @media (max-width:900px){.book-inner{grid-template-columns:1fr;gap:40px;}}
+  .book-copy h2{font-size:clamp(2rem,4vw,3rem);font-weight:500;}
+  .book-copy p{color:rgba(255,255,255,0.82);margin-top:18px;font-size:1.05rem;max-width:44ch;}
+  .book-assure{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-direction:column;gap:14px;}
+  .book-assure li{display:flex;align-items:center;gap:12px;font-size:0.95rem;color:rgba(255,255,255,0.9);}
+  .book-assure svg{width:20px;height:20px;color:var(--azure-bright);flex-shrink:0;}
+  .book-form{background:rgba(255,255,255,0.97);border-radius:24px;padding:36px;color:var(--ink);box-shadow:0 40px 80px -30px rgba(0,0,0,0.6);}
+  .book-form h3{font-size:1.5rem;font-weight:500;margin-bottom:6px;}
+  .book-form .sub{color:var(--ink-soft);font-size:0.9rem;margin-bottom:24px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:0.78rem;font-weight:500;letter-spacing:0.04em;color:var(--ink-soft);margin-bottom:7px;text-transform:uppercase;}
+  .field input,.field select,.field textarea{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:300;color:var(--ink);background:#fff;transition:border-color .3s,box-shadow .3s;}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--azure);box-shadow:0 0 0 3px rgba(27,138,158,0.14);}
+  .field textarea{resize:vertical;min-height:76px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:460px){.field-row{grid-template-columns:1fr;}}
+  .book-form .btn-fill{width:100%;justify-content:center;margin-top:8px;}
+  .form-note{font-size:0.78rem;color:var(--ink-soft);text-align:center;margin-top:14px;}
+  .form-success{display:none;text-align:center;padding:20px 0;}
+  .form-success.show{display:block;}
+  .form-success svg{width:56px;height:56px;color:var(--azure);margin:0 auto 14px;}
+  .form-success h3{margin-bottom:8px;}
+  .form-success p{color:var(--ink-soft);font-size:0.95rem;}
+
+  /* CONTACT + FOOTER */
+  footer{background:var(--navy-deep);color:rgba(255,255,255,0.75);padding:80px 0 34px;}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:44px;padding-bottom:48px;border-bottom:1px solid var(--line-light);}
+  @media (max-width:820px){.foot-grid{grid-template-columns:1fr 1fr;gap:34px;}}
+  @media (max-width:480px){.foot-grid{grid-template-columns:1fr;}}
+  footer .brand{margin-bottom:16px;}
+  footer .about{font-size:0.92rem;max-width:32ch;line-height:1.7;}
+  footer h5{color:#fff;font-family:'Outfit',sans-serif;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 18px;font-weight:600;}
+  footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;font-size:0.92rem;}
+  footer ul a:hover,.contact-line:hover{color:var(--azure-bright);}
+  .contact-line{display:flex;align-items:flex-start;gap:11px;font-size:0.92rem;transition:color .3s;}
+  .contact-line svg{width:18px;height:18px;color:var(--azure-bright);flex-shrink:0;margin-top:3px;}
+  .socials{display:flex;gap:12px;margin-top:18px;}
+  .socials a{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-light);display:flex;align-items:center;justify-content:center;transition:background .3s,border-color .3s,transform .3s;}
+  .socials a:hover{background:var(--azure);border-color:var(--azure);transform:translateY(-3px);}
+  .socials svg{width:17px;height:17px;color:#fff;}
+  .foot-bottom{padding-top:26px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:0.82rem;color:rgba(255,255,255,0.5);}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="#top" class="brand">
+      <svg class="peak" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 28 L12 10 L18 20 L23 12 L32 28 Z" fill="#28B0C6"/>
+        <path d="M12 10 L15 15.4 L11.2 20 L9 16 Z" fill="#fff" fill-opacity="0.9"/>
+        <path d="M23 12 L26 17 L22 20 L20.4 16.8 Z" fill="#fff" fill-opacity="0.9"/>
+      </svg>
+      <span class="name">Azure Escapes<small>Northern Pakistan</small></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#destinations">Destinations</a>
+      <a href="#packages">Packages</a>
+      <a href="#stay">Where you stay</a>
+      <a href="#contact">Contact</a>
+      <a href="#book" class="nav-cta">Book a trip</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1514558427911-8e293bebf18c?fm=jpg&q=80&w=2400&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1632133914376-83306e8f6eb1?fm=jpg&q=80&w=2400&fit=crop'),url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?fm=jpg&q=80&w=1600&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1636997209370-e2042d01d5a5?fm=jpg&q=80&w=2400&fit=crop'),url('https://images.unsplash.com/photo-1761675688044-0eb981b90481?fm=jpg&q=80&w=1600&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1763935269597-96e491af78cc?fm=jpg&q=80&w=1600&fit=crop')"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="wrap">
+      <span class="eyebrow on-dark reveal">Skardu · Hunza · Naran · Kaghan</span>
+      <h1 class="reveal" style="--d:.1s">Where the map<br>turns to <em>glacier blue.</em></h1>
+      <p class="reveal" style="--d:.2s">Small-group journeys through the valleys of northern Pakistan — from the meadows beneath Nanga Parbat to the turquoise rivers of Hunza. Planned by people who grew up on these roads.</p>
+      <div class="hero-actions reveal" style="--d:.3s">
+        <a href="#book" class="btn btn-fill">Plan your escape
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#destinations" class="btn btn-ghost">Explore destinations</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <div class="wrap">
+      <div class="hero-stats reveal" style="--d:.4s">
+        <div class="hero-stat"><div class="n">12+</div><div class="l">Valleys covered</div></div>
+        <div class="hero-stat"><div class="n">8,126m</div><div class="l">Highest peak in view</div></div>
+        <div class="hero-stat"><div class="n">10yrs</div><div class="l">Guiding the north</div></div>
+      </div>
+      <div class="hero-dots" id="heroDots">
+        <button class="on" aria-label="Slide 1"></button>
+        <button aria-label="Slide 2"></button>
+        <button aria-label="Slide 3"></button>
+        <button aria-label="Slide 4"></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- DESTINATIONS -->
+<section id="destinations">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Where we go</span>
+      <h2>Valleys worth the long drive</h2>
+      <p>Every destination on our map is somewhere we return to season after season. Here are the ones travellers ask for first.</p>
+    </div>
+    <div class="dest-grid">
+
+      <div class="dest tall reveal" style="--d:.02s">
+        <img src="https://images.unsplash.com/photo-1514558427911-8e293bebf18c?fm=jpg&q=80&w=1600&fit=crop" alt="Fairy Meadows beneath Nanga Parbat">
+        <div class="body">
+          <span class="alt">▲ 3,300 m · Gilgit-Baltistan</span>
+          <h3>Fairy Meadows</h3>
+          <div class="region">Base camp of Nanga Parbat</div>
+          <span class="go">View journeys →</span>
+        </div>
+      </div>
+
+      <div class="dest reveal" style="--d:.08s">
+        <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?fm=jpg&q=80&w=1600&fit=crop" alt="Passu Cones in Hunza">
+        <div class="body">
+          <span class="alt">▲ 2,500 m · Upper Hunza</span>
+          <h3>Passu &amp; Hunza</h3>
+          <div class="region">The cathedral peaks</div>
+          <span class="go">View journeys →</span>
+        </div>
+      </div>
+
+      <div class="dest reveal" style="--d:.14s">
+        <img src="https://images.unsplash.com/photo-1761675688044-0eb981b90481?fm=jpg&q=80&w=1600&fit=crop" alt="Shangrila lake near Skardu">
+        <div class="body">
+          <span class="alt">▲ 2,500 m · Baltistan</span>
+          <h3>Skardu</h3>
+          <div class="region">Lakes, forts &amp; cold desert</div>
+          <span class="go">View journeys →</span>
+        </div>
+      </div>
+
+      <div class="dest reveal" style="--d:.08s">
+        <img src="https://images.unsplash.com/photo-1714236040696-5050daedec84?fm=jpg&q=80&w=1600&fit=crop" alt="Green meadows of Naran Kaghan">
+        <div class="body">
+          <span class="alt">▲ 2,400 m · Khyber Pakhtunkhwa</span>
+          <h3>Naran &amp; Kaghan</h3>
+          <div class="region">Alpine lakes &amp; meadows</div>
+          <span class="go">View journeys →</span>
+        </div>
+      </div>
+
+      <div class="dest reveal" style="--d:.14s">
+        <img src="https://images.unsplash.com/photo-1664212008987-705d2ec758e7?fm=jpg&q=80&w=1600&fit=crop" alt="Neelum Valley river and village">
+        <div class="body">
+          <span class="alt">▲ 1,500 m · Azad Kashmir</span>
+          <h3>Neelum Valley</h3>
+          <div class="region">River villages &amp; pine</div>
+          <span class="go">View journeys →</span>
+        </div>
+      </div>
+
+      <div class="dest reveal" style="--d:.2s">
+        <img src="https://images.unsplash.com/photo-1625993983092-ce0841b732d2?fm=jpg&q=80&w=1600&fit=crop" alt="Chitral valley green fields">
+        <div class="body">
+          <span class="alt">▲ 1,500 m · Chitral</span>
+          <h3>Chitral</h3>
+          <div class="region">Terraced fields &amp; Kalash</div>
+          <span class="go">View journeys →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="pkg-sec" id="packages">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow on-dark">Curated journeys</span>
+      <h2>Packages built around the north</h2>
+      <p>Fixed departures with transport, stays, permits and a local guide included. Every price is per person, twin-sharing.</p>
+    </div>
+    <div class="pkg-grid">
+
+      <div class="pkg reveal" style="--d:.02s">
+        <div class="ph">
+          <span class="ribbon">Most booked</span>
+          <img src="https://images.unsplash.com/photo-1761675688044-0eb981b90481?fm=jpg&q=80&w=1600&fit=crop" alt="Skardu package">
+        </div>
+        <div class="pk-body">
+          <h3>Skardu &amp; the Lakes</h3>
+          <div class="route">Islamabad → Skardu → Shangrila → Deosai</div>
+          <p class="pk-desc">Seven days through Baltistan — cold desert, Upper Kachura lake, Shigar fort and a day on the Deosai plateau.</p>
+          <ul class="pk-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>7 days · 6 nights</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Flights or 4x4 transport</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Lakeside stays &amp; all permits</li>
+          </ul>
+          <div class="pk-foot">
+            <div class="price">₨ 92,000<small>per person</small></div>
+            <button class="pk-book" data-pkg="Skardu &amp; the Lakes">Book now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pkg reveal" style="--d:.1s">
+        <div class="ph">
+          <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?fm=jpg&q=80&w=1600&fit=crop" alt="Hunza package">
+        </div>
+        <div class="pk-body">
+          <h3>Hunza in Colour</h3>
+          <div class="route">Gilgit → Karimabad → Passu → Khunjerab</div>
+          <p class="pk-desc">Six days along the Karakoram Highway — Baltit fort, Attabad lake, the Passu cones and the Hussaini suspension bridge.</p>
+          <ul class="pk-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>6 days · 5 nights</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Khunjerab Pass day trip</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Heritage guesthouse stays</li>
+          </ul>
+          <div class="pk-foot">
+            <div class="price">₨ 84,000<small>per person</small></div>
+            <button class="pk-book" data-pkg="Hunza in Colour">Book now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pkg reveal" style="--d:.18s">
+        <div class="ph">
+          <span class="ribbon">Weekend</span>
+          <img src="https://images.unsplash.com/photo-1714236040696-5050daedec84?fm=jpg&q=80&w=1600&fit=crop" alt="Naran Kaghan package">
+        </div>
+        <div class="pk-body">
+          <h3>Naran &amp; Kaghan Weekender</h3>
+          <div class="route">Islamabad → Naran → Saif-ul-Malook → Kaghan</div>
+          <p class="pk-desc">A four-day escape into the Kaghan valley — Lake Saif-ul-Malook by jeep, Lulusar and riverside camps.</p>
+          <ul class="pk-feats">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>4 days · 3 nights</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Jeep to Saif-ul-Malook</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Riverside camp &amp; meals</li>
+          </ul>
+          <div class="pk-foot">
+            <div class="price">₨ 46,000<small>per person</small></div>
+            <button class="pk-book" data-pkg="Naran &amp; Kaghan Weekender">Book now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STAY -->
+<section id="stay">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Where you stay</span>
+      <h2>Nights with a view</h2>
+      <p>From glass glamping domes above the valley to warm mountain-view suites — we pick stays that earn their window.</p>
+    </div>
+    <div class="stay-grid reveal">
+      <a href="#book">
+        <img src="https://images.unsplash.com/photo-1557486931-f013f69992ed?fm=jpg&q=80&w=1600&fit=crop" alt="Glamping dome in the mountains">
+        <div class="cap"><div class="t">Glamping</div><h4>Valley Domes, Hunza</h4></div>
+      </a>
+      <a href="#book">
+        <img src="https://images.unsplash.com/photo-1746549859840-808544238d42?fm=jpg&q=80&w=1600&fit=crop" alt="Mountain-view suite">
+        <div class="cap"><div class="t">Suite</div><h4>Skardu Serena View</h4></div>
+      </a>
+      <a href="#book">
+        <img src="https://images.unsplash.com/photo-1702014861736-d62834317c5e?fm=jpg&q=80&w=1600&fit=crop" alt="Mountain hotel room">
+        <div class="cap"><div class="t">Hotel</div><h4>Karakoram Rooms</h4></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="book-sec" id="book">
+  <div class="book-bg"></div>
+  <div class="wrap">
+    <div class="book-inner">
+      <div class="book-copy reveal">
+        <span class="eyebrow on-dark">Reserve your seats</span>
+        <h2>Tell us where the mountains are calling.</h2>
+        <p>Send the form and a local trip planner replies within 24 hours with dates, a day-by-day plan and a final quote. No payment until your itinerary is confirmed.</p>
+        <ul class="book-assure">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Licensed operator · GB &amp; KP tourism registered</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Free date changes up to 15 days before travel</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Small groups · never more than 12 travellers</li>
+        </ul>
+      </div>
+
+      <div class="book-form reveal" style="--d:.15s">
+        <form id="bookingForm">
+          <h3>Request a booking</h3>
+          <p class="sub">Hold your spot — takes under a minute.</p>
+          <div class="field-row">
+            <div class="field">
+              <label for="fname">Full name</label>
+              <input type="text" id="fname" name="fname" placeholder="Your name" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="+92 3xx xxxxxxx" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="dest">Destination</label>
+              <select id="dest" name="dest" required>
+                <option value="" disabled selected>Choose a package</option>
+                <option>Skardu &amp; the Lakes</option>
+                <option>Hunza in Colour</option>
+                <option>Naran &amp; Kaghan Weekender</option>
+                <option>Fairy Meadows Trek</option>
+                <option>Neelum Valley</option>
+                <option>Chitral &amp; Kalash</option>
+                <option>Custom itinerary</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="travellers">Travellers</label>
+              <select id="travellers" name="travellers" required>
+                <option value="" disabled selected>How many?</option>
+                <option>1</option><option>2</option><option>3–4</option>
+                <option>5–8</option><option>9–12</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="date">Preferred start date</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+          <div class="field">
+            <label for="msg">Anything we should know? <span style="text-transform:none;font-weight:300;">(optional)</span></label>
+            <textarea id="msg" name="msg" placeholder="Dietary needs, celebrations, pace…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-fill">Request booking
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="form-note">We reply within 24 hours · No payment now</p>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+          <h3>Request received</h3>
+          <p id="successMsg">Thank you — a trip planner will email you within 24 hours to confirm your dates and quote.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="brand">
+          <svg class="peak" viewBox="0 0 34 34" fill="none"><path d="M2 28 L12 10 L18 20 L23 12 L32 28 Z" fill="#28B0C6"/><path d="M12 10 L15 15.4 L11.2 20 L9 16 Z" fill="#fff" fill-opacity="0.9"/><path d="M23 12 L26 17 L22 20 L20.4 16.8 Z" fill="#fff" fill-opacity="0.9"/></svg>
+          <span class="name">Azure Escapes<small>Northern Pakistan</small></span>
+        </a>
+        <p class="about">Small-group and private journeys through Gilgit-Baltistan, Kashmir and the Kaghan valley — run by guides who call the mountains home.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-5.6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2a.4.4 0 0 0 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A2.8 2.8 0 0 0 6.5 10a4.9 4.9 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.6 1.8.5 2.2.5a2.4 2.4 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.4-.3z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="#destinations">Destinations</a></li>
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#stay">Where you stay</a></li>
+          <li><a href="#book">Book a trip</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Popular</h5>
+        <ul>
+          <li><a href="#packages">Skardu &amp; Deosai</a></li>
+          <li><a href="#packages">Hunza &amp; Khunjerab</a></li>
+          <li><a href="#packages">Naran &amp; Kaghan</a></li>
+          <li><a href="#destinations">Fairy Meadows</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Get in touch</h5>
+        <ul>
+          <li class="contact-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Jinnah Super, F-7 Markaz,<br>Islamabad, Pakistan</li>
+          <li class="contact-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><a href="tel:+92510000000">+92 51 000 0000</a></li>
+          <li class="contact-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><a href="mailto:hello@azureescapes.pk">hello@azureescapes.pk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Azure Escapes. All rights reserved.</span>
+      <span>Islamabad · Gilgit · Skardu</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // nav scroll state
+  const nav=document.getElementById('nav');
+  const onScroll=()=>{
+    nav.classList.toggle('solid', window.scrollY>40);
+    const h=document.documentElement;
+    document.getElementById('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  };
+  window.addEventListener('scroll',onScroll); onScroll();
+
+  // mobile menu
+  const toggle=document.getElementById('navToggle'), links=document.getElementById('navLinks');
+  toggle.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+  // reveal on scroll
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  window.addEventListener('load',()=>setTimeout(()=>document.querySelectorAll('.reveal:not(.in)').forEach(e=>e.classList.add('in')),2200));
+
+  // hero slideshow
+  const slides=[...document.querySelectorAll('.hero-slide')];
+  const dots=[...document.querySelectorAll('#heroDots button')];
+  let idx=0, timer;
+  const show=i=>{slides.forEach((s,n)=>s.classList.toggle('active',n===i));dots.forEach((d,n)=>d.classList.toggle('on',n===i));idx=i;};
+  const next=()=>show((idx+1)%slides.length);
+  const start=()=>{timer=setInterval(next,5500);};
+  dots.forEach((d,i)=>d.addEventListener('click',()=>{clearInterval(timer);show(i);start();}));
+  start();
+
+  // package -> prefill booking
+  document.querySelectorAll('.pk-book').forEach(b=>b.addEventListener('click',()=>{
+    const name=b.getAttribute('data-pkg').replace(/&amp;/g,'&');
+    const sel=document.getElementById('dest');
+    [...sel.options].forEach(o=>{if(o.text.replace(/&amp;/g,'&')===name)o.selected=true;});
+    document.getElementById('book').scrollIntoView({behavior:'smooth'});
+  }));
+
+  // booking form
+  const form=document.getElementById('bookingForm');
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=document.getElementById('fname').value.trim().split(' ')[0]||'there';
+    const dest=document.getElementById('dest').value;
+    document.getElementById('successMsg').textContent=
+      `Thanks ${name} — your request for “${dest}” is in. A trip planner will email you within 24 hours with dates and a quote.`;
+    form.style.display='none';
+    document.getElementById('formSuccess').classList.add('show');
+  });
+
+  // set date min = today
+  const dateEl=document.getElementById('date');
+  if(dateEl){const t=new Date();t.setDate(t.getDate()+3);dateEl.min=t.toISOString().split('T')[0];}
+</script>
+
+</body>
+</html>

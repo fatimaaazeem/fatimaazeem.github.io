@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatima Azeem — Bespoke WordPress Design</title>
+<meta name="description" content="Fatima Azeem designs and builds bespoke WordPress websites — measured, fitted, and finished like couture.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121009;
+    --ink-2:#1d1a12;
+    --paper:#faf7f0;
+    --bone:#ece5d6;
+    --graphite:#4c4738;
+    --silver:#aa9f86;
+    --line-dark: rgba(250,247,240,0.13);
+    --line-light: rgba(18,16,9,0.11);
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .grain{
+    position:fixed; inset:0;
+    z-index:300;
+    pointer-events:none;
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--silver);
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;
+    height:1px;
+    background:var(--silver);
+    display:inline-block;
+  }
+  .on-light .eyebrow{color:var(--graphite);}
+  .on-light .eyebrow::before{background:var(--graphite);}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 6vw;
+  }
+
+  /* ---------- custom cursor ---------- */
+  .cursor-dot{
+    position:fixed;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--ink);
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+    transition:width .25s ease, height .25s ease, background .25s ease, opacity .25s ease;
+    mix-blend-mode:difference;
+    opacity:0;
+  }
+  @media (hover:hover) and (pointer:fine){
+    .cursor-dot{opacity:1; background:#fff;}
+  }
+  .cursor-dot.grow{width:34px; height:34px;}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0;
+    z-index:500;
+    padding:1.4rem 6vw;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    transition:background .4s ease, border-color .4s ease, padding .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(14,14,13,0.86);
+    backdrop-filter:blur(10px);
+    border-color:var(--line-dark);
+    padding:1rem 6vw;
+  }
+  .logo{
+    font-family:var(--serif);
+    font-size:1.25rem;
+    letter-spacing:0.01em;
+    color:var(--paper);
+  }
+  .logo span{font-style:italic; color:var(--silver);}
+  nav ul{
+    display:flex;
+    gap:2.4rem;
+  }
+  nav a{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--silver);
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav a::after{
+    content:"";
+    position:absolute; left:0; bottom:0;
+    width:0%; height:1px;
+    background:var(--paper);
+    transition:width .3s ease;
+  }
+  nav a:hover{color:var(--paper);}
+  nav a:hover::after{width:100%;}
+  .nav-cta{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:var(--paper);
+    padding:0.6rem 1.1rem;
+    border-radius:2px;
+    border:1px solid var(--paper);
+    transition:background .3s ease, color .3s ease;
+  }
+  .nav-cta:hover{background:transparent; color:var(--paper);}
+
+  .menu-toggle{display:none;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 1000px 600px at 80% -10%, rgba(250,247,240,0.06), transparent 60%),
+      linear-gradient(165deg, var(--ink-2) 0%, var(--ink) 60%);
+    color:var(--paper);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:8rem;
+    padding-bottom:4rem;
+    position:relative;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.35;
+    mask-image:radial-gradient(ellipse at 30% 20%, black 0%, transparent 70%);
+  }
+  .hero-grid{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:4rem;
+    align-items:end;
+  }
+  .hero-copy h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(2.6rem, 6vw, 5.2rem);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    margin:1.4rem 0 1.6rem;
+  }
+  .hero-copy h1 em{font-style:italic; color:var(--silver); font-weight:300;}
+  .hero-copy p{
+    max-width:34ch;
+    color:var(--silver);
+    font-size:1.02rem;
+    line-height:1.65;
+    margin-bottom:2.2rem;
+  }
+  .hero-actions{display:flex; gap:1rem; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:0.95rem 1.7rem;
+    border-radius:2px;
+    display:inline-flex;
+    align-items:center;
+    gap:0.6rem;
+    transition:transform .35s cubic-bezier(.16,1,.3,1), background .3s ease, color .3s ease, border-color .3s ease;
+  }
+  .btn-solid{
+    background:var(--paper); color:var(--ink); border:1px solid var(--paper);
+    position:relative; overflow:hidden;
+  }
+  .btn-solid::before{
+    content:"";
+    position:absolute; top:0; left:-60%;
+    width:40%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(18,16,9,0.18), transparent);
+    transform:skewX(-20deg);
+    transition:left .6s cubic-bezier(.16,1,.3,1);
+  }
+  .btn-solid:hover{transform:translateY(-3px);}
+  .btn-solid:hover::before{left:120%;}
+  .btn-outline{border:1px solid var(--line-dark); color:var(--paper);}
+  .btn-outline:hover{border-color:var(--paper); transform:translateY(-3px);}
+
+  /* hero mock browser: figma -> live morph */
+  .mock-frame{
+    position:relative;
+    background:#161614;
+    border:1px solid var(--line-dark);
+    border-radius:8px;
+    overflow:hidden;
+    aspect-ratio:4/3;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.6);
+  }
+  .mock-chrome{
+    display:flex; align-items:center; gap:6px;
+    padding:0.7rem 0.9rem;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .mock-chrome span{width:8px; height:8px; border-radius:50%; background:rgba(247,245,241,0.2);}
+  .mock-tag{
+    margin-left:auto;
+    font-family:var(--mono);
+    font-size:0.6rem;
+    letter-spacing:0.1em;
+    color:var(--silver);
+    padding:2px 8px;
+    border:1px solid var(--line-dark);
+    border-radius:20px;
+    position:relative;
+    height:16px;
+  }
+  .mock-tag .tag-a, .mock-tag .tag-b{
+    position:absolute; left:8px; top:1px; white-space:nowrap;
+    animation:tagswap 7s infinite;
+  }
+  .mock-tag .tag-b{animation-delay:0s; opacity:0; animation-name:tagswapb;}
+  @keyframes tagswap{
+    0%,42%{opacity:1;} 50%,100%{opacity:0;}
+  }
+  @keyframes tagswapb{
+    0%,42%{opacity:0;} 50%,92%{opacity:1;} 100%{opacity:0;}
+  }
+  .mock-body{position:relative; height:calc(100% - 37px);}
+  .layer{
+    position:absolute; inset:0;
+    padding:1.4rem;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0.7rem;
+  }
+  .layer-wire{animation:wirefade 7s infinite;}
+  .layer-final{animation:finalfade 7s infinite;}
+  @keyframes wirefade{0%,42%{opacity:1;} 50%,100%{opacity:0;}}
+  @keyframes finalfade{0%,42%{opacity:0;} 50%,92%{opacity:1;} 100%{opacity:0;}}
+
+  .wire-box{border:1px dashed rgba(247,245,241,0.35); border-radius:2px; position:relative;}
+  .wire-box::after{
+    content:attr(data-label);
+    position:absolute; top:4px; left:6px;
+    font-family:var(--mono); font-size:0.55rem; letter-spacing:0.06em;
+    color:rgba(247,245,241,0.4);
+  }
+  .wire-box.full{grid-column:1/-1; height:40px;}
+  .wire-box.tall{grid-row:span 2;}
+
+  .final-box{border-radius:3px;}
+  .final-box.full{grid-column:1/-1; height:40px; background:rgba(247,245,241,0.9); border-radius:2px;}
+  .final-box.tall{grid-row:span 2; background:linear-gradient(160deg, rgba(247,245,241,0.5), rgba(247,245,241,0.15));}
+  .final-box.txt{display:flex; flex-direction:column; gap:6px; justify-content:center;}
+  .final-line{height:6px; border-radius:3px; background:rgba(247,245,241,0.55);}
+  .final-line.short{width:55%;}
+  .final-box.btnrow{align-self:end; height:20px; width:60%; background:rgba(247,245,241,0.95); border-radius:20px;}
+
+  .cursor-chip{
+    position:absolute;
+    width:12px; height:12px;
+    background:#fff;
+    border-radius:50% 50% 50% 0;
+    transform:rotate(45deg);
+    animation:cursormove 7s infinite;
+    box-shadow:0 2px 10px rgba(0,0,0,0.4);
+  }
+  @keyframes cursormove{
+    0%{top:20%; left:15%; opacity:1;}
+    40%{top:55%; left:60%; opacity:1;}
+    45%{opacity:0;}
+    100%{opacity:0;}
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:2.4rem; left:6vw;
+    display:flex; align-items:center; gap:0.8rem;
+    font-family:var(--mono); font-size:0.68rem; letter-spacing:0.12em;
+    color:var(--silver); text-transform:uppercase;
+  }
+  .scroll-cue .line{width:1px; height:36px; background:var(--line-dark); position:relative; overflow:hidden;}
+  .scroll-cue .line::after{
+    content:""; position:absolute; top:-100%; left:0; width:100%; height:100%;
+    background:var(--paper); animation:scrolldrip 2.2s infinite ease-in-out;
+  }
+  @keyframes scrolldrip{0%{top:-100%;} 100%{top:100%;}}
+
+  /* ---------- marquee ---------- */
+  .marquee-strip{
+    background:var(--bone);
+    border-top:1px solid var(--line-light);
+    border-bottom:1px solid var(--line-light);
+    overflow:hidden;
+    padding:1.1rem 0;
+  }
+  .marquee-track{
+    display:flex; width:max-content;
+    animation:scrollmarquee 32s linear infinite;
+  }
+  .marquee-track span{
+    font-family:var(--mono);
+    font-size:0.82rem;
+    letter-spacing:0.06em;
+    color:var(--graphite);
+    padding:0 2.4rem;
+    white-space:nowrap;
+    display:flex; align-items:center; gap:0.6rem;
+  }
+  .marquee-track span::before{content:"—"; color:var(--silver);}
+  @keyframes scrollmarquee{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+
+  /* ---------- section shell ---------- */
+  section{padding:8rem 0;}
+  .on-light{background:var(--paper); color:var(--ink);}
+  .on-dark{
+    background:
+      radial-gradient(ellipse 900px 500px at 85% -10%, rgba(250,247,240,0.05), transparent 60%),
+      linear-gradient(165deg, var(--ink-2) 0%, var(--ink) 55%);
+    color:var(--paper);
+  }
+  .on-bone{background:var(--bone); color:var(--ink);}
+
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  h2.section-title{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(2rem, 4vw, 3.1rem);
+    line-height:1.08;
+    margin:1.1rem 0 0;
+    max-width:16ch;
+  }
+  h2.section-title em{font-style:italic; color:var(--graphite); font-weight:300;}
+  .on-dark h2.section-title em{color:var(--silver);}
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:5rem;
+    align-items:start;
+  }
+  .about-copy p{
+    font-size:1.05rem;
+    line-height:1.85;
+    color:var(--graphite);
+    margin-top:1.6rem;
+    max-width:48ch;
+  }
+  .stitch{
+    width:100%; height:14px;
+    margin:2.4rem 0;
+    background-image:repeating-linear-gradient(90deg, var(--graphite) 0 8px, transparent 8px 16px);
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:100% 1px;
+    background-position-y:6px;
+    opacity:0.4;
+  }
+  .about-mark{
+    position:relative;
+    aspect-ratio:3/4;
+    background:var(--ink);
+    border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .about-mark svg{width:70%; height:70%;}
+  .about-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2rem 1.5rem;
+    margin-top:2.6rem;
+  }
+  .about-stats div{border-top:1px solid var(--line-light); padding-top:0.8rem;}
+  .about-stats b{
+    font-family:var(--serif); font-size:1.9rem; font-weight:400; display:block;
+  }
+  .about-stats span{
+    font-family:var(--mono); font-size:0.68rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--silver);
+  }
+
+  /* ---------- services ---------- */
+  .services-head{display:flex; justify-content:space-between; align-items:end; gap:2rem; flex-wrap:wrap;}
+  .services-list{margin-top:4rem;}
+  .service-row{
+    border-top:1px solid var(--line-dark);
+    padding:2.4rem 0;
+    display:grid;
+    grid-template-columns:70px 1.4fr 1fr;
+    gap:2rem;
+    align-items:center;
+    transition:padding-left .4s cubic-bezier(.16,1,.3,1);
+  }
+  .service-row:last-child{border-bottom:1px solid var(--line-dark);}
+  .service-row:hover{padding-left:1rem;}
+  .service-num{font-family:var(--mono); font-size:0.8rem; color:var(--silver);}
+  .service-name{font-family:var(--serif); font-size:1.6rem; font-weight:400;}
+  .service-desc{color:var(--silver); font-size:0.95rem; line-height:1.6;}
+
+  /* ---------- process ---------- */
+  .process-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:2rem;
+    margin-top:4rem;
+  }
+  .process-card{
+    border-top:1px solid var(--line-light);
+    padding-top:1.6rem;
+  }
+  .process-num{
+    font-family:var(--mono); font-size:0.7rem; color:var(--silver);
+    letter-spacing:0.1em;
+  }
+  .process-name{
+    font-family:var(--serif); font-size:1.5rem; margin:0.8rem 0 0.7rem;
+  }
+  .process-desc{color:var(--graphite); font-size:0.92rem; line-height:1.6;}
+
+  /* ---------- work ---------- */
+  .work-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:2rem;
+    margin-top:4rem;
+  }
+  .work-card{
+    background:var(--ink-2);
+    border:1px solid var(--line-dark);
+    border-radius:6px;
+    overflow:hidden;
+    transition:transform .5s cubic-bezier(.16,1,.3,1);
+    display:block;
+  }
+  .work-card:hover{transform:translateY(-8px);}
+  .work-shot{
+    aspect-ratio:16/11;
+    position:relative;
+    padding:1.1rem;
+    display:flex; flex-direction:column; gap:0.6rem;
+    background:
+      linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0) 40%);
+  }
+  .work-shot .wb{height:10px; border-radius:2px; background:rgba(247,245,241,0.12);}
+  .work-shot .wb.hero{height:38%; background:rgba(247,245,241,0.08); border:1px dashed rgba(247,245,241,0.2);}
+  .work-shot .wb.w60{width:60%;}
+  .work-shot .wb.w40{width:40%;}
+  .work-info{
+    padding:1.4rem 1.4rem 1.6rem;
+    border-top:1px solid var(--line-dark);
+  }
+  .work-info h3{font-family:var(--serif); font-size:1.25rem; font-weight:400; margin-bottom:0.4rem;}
+  .work-info p{font-family:var(--mono); font-size:0.68rem; letter-spacing:0.06em; color:var(--silver); text-transform:uppercase;}
+
+  /* ---------- philosophy quote ---------- */
+  .quote-text{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(1.7rem, 3.6vw, 2.9rem);
+    line-height:1.35;
+    max-width:22ch;
+    margin-top:1.4rem;
+  }
+  .quote-text em{font-style:italic; color:var(--graphite); font-weight:300;}
+  .quote-sub{
+    font-size:1rem;
+    color:var(--graphite);
+    max-width:40ch;
+    line-height:1.7;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{
+    text-align:left;
+    position:relative;
+  }
+  .contact h2{
+    font-family:var(--serif); font-weight:400;
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    line-height:1.05;
+    max-width:16ch;
+  }
+  .contact h2 em{font-style:italic; color:var(--silver); font-weight:300;}
+  .contact-row{
+    display:flex; gap:1.2rem; flex-wrap:wrap;
+    margin-top:2.6rem;
+  }
+  .contact-links{
+    margin-top:3.6rem;
+    display:flex; gap:3rem; flex-wrap:wrap;
+    border-top:1px solid var(--line-dark);
+    padding-top:2rem;
+  }
+  .contact-links a{
+    font-family:var(--mono); font-size:0.85rem;
+    color:var(--paper); border-bottom:1px solid var(--line-dark);
+    padding-bottom:2px;
+    transition:border-color .3s ease, color .3s ease;
+  }
+  .contact-links a:hover{border-color:var(--paper); color:var(--silver);}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--ink);
+    color:var(--silver);
+    border-top:1px solid var(--line-dark);
+    padding:2.2rem 0;
+  }
+  .footer-row{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:0.7rem; letter-spacing:0.06em;
+  }
+
+  /* ---------- WhatsApp float ---------- */
+  .wa-float{
+    position:fixed; bottom:1.8rem; right:1.8rem; z-index:400;
+    background:var(--ink); color:var(--paper);
+    width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line-dark);
+    box-shadow:0 20px 40px -12px rgba(0,0,0,0.4);
+    transition:transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .wa-float:hover{transform:scale(1.08);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr; gap:3rem;}
+    .about-grid{grid-template-columns:1fr; gap:3rem;}
+    .about-mark{order:-1; max-width:280px;}
+    .process-grid{grid-template-columns:repeat(2, 1fr);}
+    .work-grid{grid-template-columns:repeat(2, 1fr);}
+    .service-row{grid-template-columns:50px 1fr; grid-template-rows:auto auto;}
+    .service-desc{grid-column:1/-1;}
+  }
+  @media (max-width:680px){
+    nav ul{display:none;}
+    .menu-toggle{display:block; background:none; border:none; color:var(--paper); font-family:var(--mono); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;}
+    .process-grid{grid-template-columns:1fr;}
+    .work-grid{grid-template-columns:1fr;}
+    section{padding:5.5rem 0;}
+    .contact-links{flex-direction:column; gap:1.2rem;}
+  }
+
+  :focus-visible{outline:2px solid var(--graphite); outline-offset:3px;}
+  .on-dark :focus-visible{outline-color:var(--paper);}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header id="siteHeader">
+  <a href="#top" class="logo">Fatima <span>Azeem</span></a>
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <a href="#contact" class="nav-cta">Start a project</a>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:0;">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Every site,<br><em>measured</em> and made to fit.</h1>
+        <p>I design and build bespoke WordPress websites for brands who'd rather feel tailored than templated — from first sketch to the site going live.</p>
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-solid">See the work</a>
+          <a href="https://wa.me/923216192040?text=Hi%20Fatima%2C%20I%27d%20like%20to%20talk%20about%20a%20WordPress%20project." target="_blank" rel="noopener" class="btn btn-outline">Chat on WhatsApp</a>
+        </div>
+      </div>
+      <div class="mock-frame">
+        <div class="mock-chrome">
+          <span></span><span></span><span></span>
+          <div class="mock-tag">
+            <span class="tag-a">FIRST DRAFT</span>
+            <span class="tag-b">LIVE ON WORDPRESS</span>
+          </div>
+        </div>
+        <div class="mock-body">
+          <div class="layer layer-wire">
+            <div class="wire-box full" data-label="header"></div>
+            <div class="wire-box tall" data-label="image"></div>
+            <div class="wire-box" data-label="h1"></div>
+            <div class="wire-box" data-label="text"></div>
+            <div class="wire-box" data-label="cta"></div>
+            <div class="cursor-chip"></div>
+          </div>
+          <div class="layer layer-final">
+            <div class="final-box full"></div>
+            <div class="final-box tall"></div>
+            <div class="final-box txt">
+              <div class="final-line"></div>
+              <div class="final-line short"></div>
+              <div class="final-line"></div>
+              <div class="final-box btnrow"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span class="line"></span>Scroll</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>Custom WordPress Design</span>
+      <span>Website Redesigns</span>
+      <span>Business &amp; Portfolio Sites</span>
+      <span>Landing Pages</span>
+      <span>Care &amp; Maintenance</span>
+      <span>Custom WordPress Design</span>
+      <span>Website Redesigns</span>
+      <span>Business &amp; Portfolio Sites</span>
+      <span>Landing Pages</span>
+      <span>Care &amp; Maintenance</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="on-light" id="about">
+    <div class="wrap about-grid">
+      <div class="about-mark reveal">
+        <svg viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="160" height="220" rx="2" stroke="#B9B6AC" stroke-width="1" stroke-dasharray="4 5"/>
+          <circle cx="100" cy="95" r="34" stroke="#F7F5F1" stroke-width="1.4"/>
+          <path d="M50 210c0-30 24-46 50-46s50 16 50 46" stroke="#F7F5F1" stroke-width="1.4"/>
+          <line x1="20" y1="150" x2="180" y2="150" stroke="#B9B6AC" stroke-width="1" stroke-dasharray="2 6"/>
+        </svg>
+      </div>
+      <div class="about-copy reveal">
+        <p class="eyebrow">The Atelier</p>
+        <h2 class="section-title">Trained in code,<br><em>tuned</em> for detail.</h2>
+        <p>I'm Fatima Azeem — I design and hand-build WordPress websites for founders and small studios who want their site to feel considered, not assembled from a template. Every project starts on paper before it ever touches a browser.</p>
+        <div class="stitch"></div>
+        <p>I work closely with each client through discovery, design, and build, treating every layout the way a tailor treats a measurement: nothing is generic, nothing is left loose.</p>
+        <div class="about-stats">
+          <div><b>1:1</b><span>Client Ratio</span></div>
+          <div><b>WP</b><span>Platform Focus</span></div>
+          <div><b>Sketch→Live</b><span>Design Workflow</span></div>
+          <div><b>End–End</b><span>Design To Launch</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="on-dark" id="services">
+    <div class="wrap">
+      <div class="services-head reveal">
+        <div>
+          <p class="eyebrow">What I Build</p>
+          <h2 class="section-title">Four ways to <em>fit</em> your WordPress site.</h2>
+        </div>
+      </div>
+      <div class="services-list reveal">
+        <div class="service-row">
+          <span class="service-num">01</span>
+          <span class="service-name">Custom WordPress Design</span>
+          <span class="service-desc">A site designed from a blank canvas around your brand — not a recolored theme.</span>
+        </div>
+        <div class="service-row">
+          <span class="service-num">02</span>
+          <span class="service-name">Business &amp; Portfolio Sites</span>
+          <span class="service-desc">Multi-page WordPress sites for founders, studios, and small brands who need to look established.</span>
+        </div>
+        <div class="service-row">
+          <span class="service-num">03</span>
+          <span class="service-name">Site Revamps</span>
+          <span class="service-desc">A dated WordPress site rebuilt on its existing content, faster and better fitted.</span>
+        </div>
+        <div class="service-row">
+          <span class="service-num">04</span>
+          <span class="service-name">Care &amp; Maintenance</span>
+          <span class="service-desc">Updates, backups, and small edits handled monthly, so the site stays pressed.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="on-light" id="process">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">How I Work</p>
+        <h2 class="section-title">The fitting, <em>in four stages.</em></h2>
+      </div>
+      <div class="process-grid reveal">
+        <div class="process-card">
+          <p class="process-num">STAGE 01</p>
+          <h3 class="process-name">Measure</h3>
+          <p class="process-desc">A discovery call to understand your brand, content, and what the site needs to do.</p>
+        </div>
+        <div class="process-card">
+          <p class="process-num">STAGE 02</p>
+          <h3 class="process-name">Fit</h3>
+          <p class="process-desc">Sketch the layout, then build the real thing in WordPress — structure first, polish second.</p>
+        </div>
+        <div class="process-card">
+          <p class="process-num">STAGE 03</p>
+          <h3 class="process-name">Finish</h3>
+          <p class="process-desc">A round of revisions to adjust spacing, copy, and detail until it sits right.</p>
+        </div>
+        <div class="process-card">
+          <p class="process-num">STAGE 04</p>
+          <h3 class="process-name">Press</h3>
+          <p class="process-desc">Final checks, launch, and a walkthrough of how to manage the site yourself.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="on-dark" id="work">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">Selected Work</p>
+        <h2 class="section-title">A few sites, <em>fitted so far.</em></h2>
+      </div>
+      <div class="work-grid reveal">
+        <a class="work-card" href="https://www.fatimamc.com" target="_blank" rel="noopener">
+          <div class="work-shot" style="background-image:linear-gradient(160deg, rgba(18,16,9,0.4), rgba(18,16,9,0.05) 45%), url('fatimamc-preview.png'); background-size:cover; background-position:center;"></div>
+          <div class="work-info">
+            <h3>fatimamc.com</h3>
+            <p>Healthcare · Live Site · 2026</p>
+          </div>
+        </a>
+        <a class="work-card" href="cinnamon-site.html" target="_blank" rel="noopener">
+          <div class="work-shot" style="background-image:linear-gradient(160deg, rgba(18,16,9,0.4), rgba(18,16,9,0.05) 45%), url('hero-croissants.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="work-info">
+            <h3>Cinnamon</h3>
+            <p>Bakery &amp; Café · Landing Page</p>
+          </div>
+        </a>
+        <a class="work-card" href="azure-escapes.html" target="_blank" rel="noopener">
+          <div class="work-shot" style="background-image:linear-gradient(160deg, rgba(18,16,9,0.4), rgba(18,16,9,0.05) 45%), url('fairy-meadows.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="work-info">
+            <h3>Azure Escapes</h3>
+            <p>Travel Agency · Landing Page</p>
+          </div>
+        </a>
+        <a class="work-card" href="shopprettier.html" target="_blank" rel="noopener">
+          <div class="work-shot" style="background-image:linear-gradient(160deg, rgba(18,16,9,0.4), rgba(18,16,9,0.05) 45%), url('ring-tray-hero.jpg'); background-size:cover; background-position:center;"></div>
+          <div class="work-info">
+            <h3>shopprettier</h3>
+            <p>Jewelry Store · Landing Page</p>
+          </div>
+        </a>
+        <a class="work-card" href="gymm.html" target="_blank" rel="noopener">
+          <div class="work-shot" style="background-image:linear-gradient(160deg, rgba(18,16,9,0.4), rgba(18,16,9,0.05) 45%), url('rig-tire.avif'); background-size:cover; background-position:center;"></div>
+          <div class="work-info">
+            <h3>Gymm</h3>
+            <p>Fitness Gym · Landing Page</p>
+          </div>
+        </a>
+        <a class="work-card" href="https://mimarcare.co.uk/" target="_blank" rel="noopener">
+          <div class="work-shot" style="background-image:linear-gradient(160deg, rgba(18,16,9,0.4), rgba(18,16,9,0.05) 45%), url('mimarcare-preview.png'); background-size:cover; background-position:center;"></div>
+          <div class="work-info">
+            <h3>mimarcare.co.uk</h3>
+            <p>Home Care · Live Site · 2025</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="on-light">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">Philosophy</p>
+      </div>
+      <p class="quote-text reveal">A website should feel like it was <em>built for one brand</em> — never a template with a new logo dropped in.</p>
+      <div class="stitch reveal"></div>
+      <p class="quote-sub reveal">That's the standard every project is measured against, from the first sketch to the day it goes live.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="on-dark contact" id="contact">
+    <div class="wrap">
+      <p class="eyebrow reveal">Get In Touch</p>
+      <h2 class="reveal">Let's tailor<br>your <em>next site.</em></h2>
+      <div class="contact-row reveal">
+        <a href="https://wa.me/923216192040?text=Hi%20Fatima%2C%20I%27d%20like%20to%20talk%20about%20a%20WordPress%20project." target="_blank" rel="noopener" class="btn btn-solid">Message on WhatsApp</a>
+        <a href="mailto:fatima_azeem1@icloud.com" class="btn btn-outline">Email me</a>
+      </div>
+      <div class="contact-links reveal">
+        <a href="mailto:fatima_azeem1@icloud.com">fatima_azeem1@icloud.com</a>
+        <a href="https://wa.me/923216192040" target="_blank" rel="noopener">+92 321 6192040 — WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© <span id="year"></span> Fatima Azeem</span>
+    <span>WordPress Design &amp; Development</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/923216192040?text=Hi%20Fatima%2C%20I%27d%20like%20to%20talk%20about%20a%20WordPress%20project." target="_blank" rel="noopener" aria-label="Message on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.01A7.94 7.94 0 0 0 20 12.06a7.9 7.9 0 0 0-2.4-5.74Zm-5.55 12.2h-.01a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.65.67-2.43-.16-.25a6.6 6.6 0 0 1 10.2-8.22 6.55 6.55 0 0 1 1.95 4.68 6.6 6.6 0 0 1-6.55 6.63Zm3.62-4.94c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.45.1-.13.19-.5.64-.62.77-.11.13-.23.15-.42.05-.2-.1-.82-.3-1.56-.96-.58-.51-.96-1.15-1.08-1.34-.11-.2-.01-.3.09-.4.09-.1.2-.23.3-.35.1-.11.13-.19.2-.32.06-.13.03-.24-.02-.34-.05-.1-.45-1.08-.62-1.48-.16-.39-.33-.33-.45-.34h-.38c-.13 0-.34.05-.52.24-.18.19-.68.66-.68 1.6s.7 1.86.79 1.99c.1.13 1.37 2.1 3.32 2.94.46.2.83.32 1.11.41.47.15.9.13 1.24.08.38-.06 1.17-.48 1.33-.94.17-.46.17-.86.12-.94-.05-.09-.18-.14-.38-.24Z" fill="currentColor"/>
+  </svg>
+</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // header on scroll
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => {
+    if (window.scrollY > 40) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el => io.observe(el));
+
+  // custom cursor (desktop only)
+  const dot = document.getElementById('cursorDot');
+  const isFinePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (isFinePointer) {
+    window.addEventListener('mousemove', (e) => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .work-card').forEach(el => {
+      el.addEventListener('mouseenter', () => dot.classList.add('grow'));
+      el.addEventListener('mouseleave', () => dot.classList.remove('grow'));
+    });
+  } else {
+    dot.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
